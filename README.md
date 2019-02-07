@@ -12,3 +12,15 @@ Using:
 ## Solution & namespace
 
 ### Project Web & Adding to solution
+
+```
+mkdir src;
+dotnet new sln -n Kinito.DotNet.Core.GroupManagement;
+cd src;
+mkdir Web;
+cd Web;
+dotnet new web;
+cd ../..;
+dotnet sln add src/Web/Web.csproj;
+code .;
+```
