@@ -23,4 +23,6 @@ dotnet new web;
 cd ../..;
 dotnet sln add src/Web/Web.csproj;
 code .;
+cd src/Web;
+dotnet run;
 ```
