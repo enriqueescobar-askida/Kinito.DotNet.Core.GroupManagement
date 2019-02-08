@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
+using Web.Demo;
 
 namespace Web.Controllers
 {
@@ -13,6 +14,11 @@ namespace Web.Controllers
     public class GroupsController : Controller
     {
         private static long currentGroupId = 1;
+        private readonly IGroupIdGenerator _groupIdGenerator;
+        public GroupsController(IGroupIdGenerator groupIdGenerator)
+        {
+            _groupIdGenerator = groupIdGenerator;
+        }
 
         /// <summary>The group view model list</summary>
         private static readonly List<GroupViewModel> groupViewModelList
@@ -67,7 +73,7 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateReally(GroupViewModel model)
         {
-            model.Id = ++currentGroupId;
+            model.Id = _groupIdGenerator.Next(); // ++currentGroupId;
             groupViewModelList.Add(model);
 
             return RedirectToAction("Index");

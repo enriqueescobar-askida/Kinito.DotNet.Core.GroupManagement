@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Web.Demo;
 
 namespace Web
 {
@@ -16,6 +17,7 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSingleton<IGroupIdGenerator, GroupIdGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,6 +27,19 @@ namespace Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // app.UseStaticFiles();
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.OnStarting(() =>
+                {
+                    context.Response.Headers.Add("X-Powered-By", "ASP.NET Core: From 0 to overkill");
+                    return Task.CompletedTask;
+                });
+
+                await next.Invoke();
+            });
 
             app.UseMvc();
 
